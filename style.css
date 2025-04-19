@@ -148,7 +148,7 @@ body {
 }
 .quiz-content .answer-options {
   list-style: none;
-  margin-top: 20px;
+  margin-top: 2rem;
 }
 .quiz-content .answer-option {
   display: flex;
@@ -161,6 +161,7 @@ body {
   cursor: pointer;
   border: 1px solid #b5acff;
   transition: 0.3s ease;
+  margin-top: 1rem;
 }
 .quiz-content .answer-option span{
   display: block;
