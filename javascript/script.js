@@ -1,5 +1,7 @@
 const answerOptions= document.querySelector(".answer-options");
+const nextQuestionBtn= document.querySelector(".next-question-btn");
 let quizCategory= "programming";
+let currentQuestion= null
 
 
 const getRandomQuestion = ()=>{
@@ -9,21 +11,37 @@ const getRandomQuestion = ()=>{
     return randomQuestion;
     
 }
+const highlightCorrrectAnswer =()=>{
+    const correctOption = answerOptions.querySelectorAll(".answer-option")[currentQuestion.correctAnswer];
+    correctOption.classList.add("correct");
+}
+
+const handleAnswer = (option,answerIndex)=>{
+    const isCorrect= currentQuestion.correctAnswer===answerIndex;
+    option.classList.add(isCorrect? 'correct':'incorrect');
+
+    !isCorrect? highlightCorrrectAnswer():"";
+
+    answerOptions.querySelectorAll(".answer-option").forEach(option=> option.style.pointerEvents="none");
+}
 
 const renderQuestion =()=>{
-    const currentQuestion= getRandomQuestion();
+     currentQuestion= getRandomQuestion();
     if(!currentQuestion) return;
     console.log(currentQuestion);
     
     answerOptions.innerHTML="";
     document.querySelector(".question-text").textContent= currentQuestion.question;
 
-    currentQuestion.options.forEach(option=>{
+    currentQuestion.options.forEach(( option,index)=>{
         const li= document.createElement("li");
         li.classList.add("answer-option");
         li.textContent= option;
         answerOptions.appendChild(li);
+        li.addEventListener("click",()=> handleAnswer(li,index));
     })
 }
 renderQuestion();
+
+nextQuestionBtn.addEventListener("click",renderQuestion);
 
