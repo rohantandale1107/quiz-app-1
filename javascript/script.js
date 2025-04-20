@@ -6,7 +6,7 @@ const questionStatus = document.querySelector(".question-status");
 const timerDisplay = document.querySelector(".time-duration");
 const resultContainer= document.querySelector(".result-container")
 
-const QUIZ_TIME_LIMIT = 15;
+const QUIZ_TIME_LIMIT = 10;
 let currentTime = QUIZ_TIME_LIMIT;
 let timer = null;
 let quizCategory = "programming";
@@ -34,10 +34,11 @@ const startTimer = () => {
     currentTime--;
     timerDisplay.textContent = `${currentTime}s`;
 
-    if (currentTime < 0) {
+    if (currentTime <= 0) {
       clearInterval(timer);
       highlightCorrrectAnswer();
       nextQuestionBtn.style.visibility = "visible";
+      quizContainer.querySelector(".quiz-timer").style.background ="red"
 
       answerOptions
         .querySelectorAll(".answer-option")
@@ -96,6 +97,7 @@ const handleAnswer = (option, answerIndex) => {
   nextQuestionBtn.style.visibility = "visible";
 };
 
+//render current quesition and its option in the quiz
 const renderQuestion = () => {
   currentQuestion = getRandomQuestion();
   if (!currentQuestion) return;
@@ -104,8 +106,11 @@ const renderQuestion = () => {
   resetTimer();
   startTimer();
 
+  //update ui
+
   answerOptions.innerHTML = "";
   nextQuestionBtn.style.visibility = "hidden";
+  quizContainer.querySelector(".quiz-timer").style.background ="#32313c"
   document.querySelector(".question-text").textContent =
     currentQuestion.question;
   questionStatus.innerHTML = `<b>${questionsIndexHistory.length}</b> of <b>${numberOfQuestions}</b> Questions`;
@@ -119,6 +124,24 @@ const renderQuestion = () => {
   });
 };
 
+const startQuiz=()=>{
+    configContainer.style.display="none"
+    quizContainer.style.display="block"
+
+     quizCategory = configContainer.querySelector(".category-option.active").textContent;
+
+     numberOfQuestions = parseInt(configContainer.querySelector(".category-option.active").textContent);
+
+    renderQuestion();
+}
+ 
+document.querySelectorAll(".category-option, .question-option").forEach(option=>{
+    option.addEventListener("click",()=>{
+        option.parentNode.querySelector(".active").classList.remove("active");
+        option.classList.add("active")
+    })
+})
+
 const resetQuiz=()=>{
     resetTimer();
     correctAnswerCount=0;
@@ -127,7 +150,8 @@ const resetQuiz=()=>{
     resultContainer.style.display="none";
 }
 
-renderQuestion();
+
 
 nextQuestionBtn.addEventListener("click", renderQuestion);
 document.querySelector(".try-again-btn").addEventListener("click", resetQuiz);
+document.querySelector(".start-quiz-btn").addEventListener("click", startQuiz);
