@@ -124,16 +124,16 @@ const renderQuestion = () => {
   });
 };
 
-const startQuiz=()=>{
-    configContainer.style.display="none"
-    quizContainer.style.display="block"
-
-     quizCategory = configContainer.querySelector(".category-option.active").textContent;
-
-     numberOfQuestions = parseInt(configContainer.querySelector(".category-option.active").textContent);
-
+const startQuiz = () => {
+    configContainer.style.display = "none";
+    quizContainer.style.display = "block";
+  
+    quizCategory = configContainer.querySelector(".category-option.active").textContent;
+    numberOfQuestions = parseInt(configContainer.querySelector(".question-option.active").textContent);
+  
     renderQuestion();
-}
+  };
+  
  
 document.querySelectorAll(".category-option, .question-option").forEach(option=>{
     option.addEventListener("click",()=>{
